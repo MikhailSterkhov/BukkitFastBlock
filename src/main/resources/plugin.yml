@@ -1,0 +1,8 @@
+name: FastBlockAPI
+main: com.itzstonlex.fastblock.FastBlockPlugin
+
+author: itzstonlex
+
+version: 1.0
+
+website:
