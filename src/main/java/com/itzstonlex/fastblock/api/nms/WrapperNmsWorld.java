@@ -1,4 +1,4 @@
-package com.itzstonlex.fastblock.api.util.nms;
+package com.itzstonlex.fastblock.api.nms;
 
 import com.itzstonlex.fastblock.api.util.ReflectionHelper;
 import lombok.Getter;
@@ -47,6 +47,6 @@ public class WrapperNmsWorld implements NmsWrapper {
         super.finalize();
 
         chunksFlag = null;
-        chunksMap.clear();
+        clearChunksMap();
     }
 }

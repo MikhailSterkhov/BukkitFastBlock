@@ -1,4 +1,4 @@
-package com.itzstonlex.fastblock.api.util.nms;
+package com.itzstonlex.fastblock.api.nms;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -47,7 +47,7 @@ public class NmsHelper {
     static {
         try {
             CHUCK_SECTION_CONSTRUCTOR = CHUNK_SECTION_CLASS.getConstructor(int.class, boolean.class);
-            SET_BLOCK_FAST_METHOD =  DATA_PALETTE_BLOCK_CLASS.getDeclaredMethod("setBlock", int.class, int.class, int.class, BLOCK_DATA_CLASS);
+            SET_BLOCK_FAST_METHOD = CHUNK_SECTION_CLASS.getDeclaredMethod("setType", int.class, int.class, int.class, BLOCK_DATA_CLASS);
         }
         catch (NoSuchMethodException e) {
             throw new RuntimeException(e);
@@ -70,7 +70,7 @@ public class NmsHelper {
     public Class<?> getNmsType(@NonNull String className) {
         return Class.forName("net.minecraft.server." + NMS_PACKAGE_VERSION + "." + className);
     }
-    
+
     @SneakyThrows
     public Object getNmsHandle(Object src) {
         objectsHandlesCache.cleanUp();
@@ -92,8 +92,7 @@ public class NmsHelper {
     }
 
     @SneakyThrows
-    public void invokeSetFastBlock(Object paletteSrc, int x, int y, int z, Object blockData) {
-        SET_BLOCK_FAST_METHOD.invoke(paletteSrc, x, y, z, blockData);
+    public void invokeSetFastBlock(Object src, int x, int y, int z, Object blockData) {
+        SET_BLOCK_FAST_METHOD.invoke(src, x, y, z, blockData);
     }
-
 }

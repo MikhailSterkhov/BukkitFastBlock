@@ -1,8 +1,8 @@
 package com.itzstonlex.fastblock.api;
 
-import com.itzstonlex.fastblock.api.util.nms.NmsHelper;
-import com.itzstonlex.fastblock.api.util.nms.WrapperNmsChunk;
-import com.itzstonlex.fastblock.api.util.nms.WrapperNmsWorld;
+import com.itzstonlex.fastblock.api.nms.NmsHelper;
+import com.itzstonlex.fastblock.api.nms.WrapperNmsChunk;
+import com.itzstonlex.fastblock.api.nms.WrapperNmsWorld;
 import lombok.NonNull;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -26,6 +26,10 @@ public class FastBlockPlaceSession {
     public FastBlockPlaceSession setBlockData(@NonNull Block block, @NonNull MaterialData materialData) {
         if (startTimeMillis == null) {
             startTimeMillis = System.currentTimeMillis();
+        }
+
+        if (block.getY() > block.getWorld().getMaxHeight()) {
+            return this;
         }
 
         WrapperNmsChunk nmsChunk = wrapperNmsWorld.getNmsChunkAt(block.getX(), block.getZ());

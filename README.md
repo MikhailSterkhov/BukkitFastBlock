@@ -24,7 +24,7 @@ Fast Minecraft Blocks Placing Utilities
 Fast Place Sessions Examples:
 ```Java
 public void fillRegionByType(CuboidRegion cuboidRegion, Material material) {
-    FastBlockPlaceSession placeSession = new FastBlockPlaceSession(cuboidRegion.getWorld());
+    FastBlockPlaceSession placeSession = FastPlacePlugin.createSession(cuboidRegion.getWorld());
 
     for (Block block : cuboidRegion) {
         placeSession.setBlockType(block, material);
@@ -37,7 +37,7 @@ public void fillRegionByType(CuboidRegion cuboidRegion, Material material) {
 ```
 ```Java
 public void setFastLineX(Location begin, Material material, int length) {
-    FastBlockPlaceSession placeSession = new FastBlockPlaceSession(begin.getWorld());
+    FastBlockPlaceSession placeSession = FastPlacePlugin.createSession(begin);
 
     for (int x = 0; x <= length; x++) {
         placeSession.setBlockType(begin.clone().add(x, 0, 0), material);
@@ -52,6 +52,10 @@ public void setFastLineX(Location begin, Material material, int length) {
 
 ## SPEED TESTS RESULTS
 
-* `60K blocks placed per 450 ms (0.45 sec)`
+* ![img.png](tests_screens/img3k.png)
 
-* `8M blocks placed per 3200 ms (3.2 sec)`
+* ![img.png](tests_screens/img35k.png)
+
+* ![img.png](tests_screens/img70k.png)
+
+* ![img.png](tests_screens/img175k.png)

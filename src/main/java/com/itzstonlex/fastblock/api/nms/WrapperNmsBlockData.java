@@ -1,4 +1,4 @@
-package com.itzstonlex.fastblock.api.util.nms;
+package com.itzstonlex.fastblock.api.nms;
 
 import lombok.Getter;
 import lombok.NonNull;
@@ -14,6 +14,6 @@ public class WrapperNmsBlockData implements NmsWrapper {
     }
 
     WrapperNmsBlockData(@NonNull MaterialData materialData) {
-        this(NmsHelper.BLOCK_DATA_CLASS.cast(NmsHelper.getNmsBlockData(materialData)));
+        this(NmsHelper.getNmsBlockData(materialData));
     }
 }

@@ -1,4 +1,4 @@
-package com.itzstonlex.fastblock.api.util.nms;
+package com.itzstonlex.fastblock.api.nms;
 
 import lombok.NonNull;
 
