@@ -1,12 +1,10 @@
 package com.itzstonlex.fastblock.api.nms;
 
-import com.itzstonlex.fastblock.api.util.ReflectionHelper;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.SneakyThrows;
 import org.bukkit.Chunk;
 import org.bukkit.material.MaterialData;
-import org.bukkit.util.Vector;
 
 import java.util.Arrays;
 import java.util.Map;
@@ -28,15 +26,10 @@ public class WrapperNmsChunk implements NmsWrapper {
         this(NmsHelper.getNmsHandle(chunk));
     }
 
-    public void clearSectionsArray() {
-        chunkSectionsArray = null;
-        palettesByChunkMap = null;
-    }
-
     @SneakyThrows
     private Object findChunkSection(boolean chunksFlag, int y) {
         if (chunkSectionsArray == null) {
-            chunkSectionsArray = (Object[]) ReflectionHelper.invoke(handle, "getSections");
+            chunkSectionsArray = (Object[]) NmsHelper.METHOD_GET_CHUNK_SECTIONS.invoke(handle);
         }
 
         int sectionIndex = y >> 4;
@@ -53,9 +46,10 @@ public class WrapperNmsChunk implements NmsWrapper {
         }
 
         if (section == null) {
-            section = NmsHelper.CHUCK_SECTION_CONSTRUCTOR.newInstance(y >> 4 << 4, chunksFlag);
+            section = NmsHelper.CONSTRUCTOR_CHUCK_SECTION.invoke(y >> 4 << 4, chunksFlag);
 
             chunkSectionsArray[sectionIndex] = section;
+
         }
 
         return section;
@@ -68,13 +62,9 @@ public class WrapperNmsChunk implements NmsWrapper {
         NmsHelper.invokeSetFastBlock(section, x & 15, y & 15, z & 15, blockData.getHandle());
     }
 
-    public void setFastBlock(boolean chunksFlag, @NonNull Vector vector, @NonNull MaterialData materialData) {
-        setFastBlock(chunksFlag, vector.getBlockX(), vector.getBlockY(), vector.getBlockZ(), materialData);
+    public void flush() {
+        chunkSectionsArray = null;
+        palettesByChunkMap = null;
     }
 
-    @Override
-    protected void finalize() throws Throwable {
-        super.finalize();
-        clearSectionsArray();
-    }
 }

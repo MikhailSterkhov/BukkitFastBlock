@@ -52,13 +52,22 @@ public void setFastLineX(Location begin, Material material, int length) {
 
 ## SPEED TESTS RESULTS
 
-* ![img.png](tests_screens/img3k.png)
+* ![img.png](tests_screens/img9K.png)
 
-* ![img.png](tests_screens/img35k.png)
+* ![img.png](tests_screens/img68K.png)
 
-* ![img.png](tests_screens/img70k.png)
+* ![img.png](tests_screens/img226K.png)
 
-* ![img.png](tests_screens/img175k.png)
+* ![img.png](tests_screens/img531K.png)
+
+* ![img.png](tests_screens/img1M.png)
+
+* ![img.png](tests_screens/img2M.png)
+
+* ![img.png](tests_screens/img4M.png)
+
+**WITH TPS** ( executed /tps ):
+![tps.png](tests_screens/tps.png)
 
 ---
 

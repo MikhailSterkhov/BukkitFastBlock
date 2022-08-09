@@ -11,18 +11,16 @@ import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 import org.bukkit.util.Vector;
 
-import java.util.concurrent.CompletableFuture;
-
 public class FastBlockPlaceSession {
-    
-    protected final WrapperNmsWorld wrapperNmsWorld;
+
+    private final WrapperNmsWorld wrapperNmsWorld;
 
     private Long startTimeMillis;
-    
+
     public FastBlockPlaceSession(@NonNull World world) {
         this.wrapperNmsWorld = NmsHelper.wrap(world);
     }
-    
+
     public FastBlockPlaceSession setBlockData(@NonNull Block block, @NonNull MaterialData materialData) {
         if (startTimeMillis == null) {
             startTimeMillis = System.currentTimeMillis();
@@ -32,16 +30,33 @@ public class FastBlockPlaceSession {
             return this;
         }
 
-        WrapperNmsChunk nmsChunk = wrapperNmsWorld.getNmsChunkAt(block.getX(), block.getZ());
-        nmsChunk.setFastBlock(wrapperNmsWorld.getChunksFlag(), block.getLocation().toVector(), materialData);
+        int x = block.getX();
+        int y = block.getY();
+        int z = block.getZ();
 
-        block.getState().update();
+        WrapperNmsChunk nmsChunk = wrapperNmsWorld.getNmsChunkAt(x, z);
+        nmsChunk.setFastBlock(wrapperNmsWorld.getChunksFlag(), x, y, z, materialData);
 
         return this;
     }
 
     public FastBlockPlaceSession setBlockData(@NonNull Location location, @NonNull MaterialData materialData) {
-        return setBlockData(location.getBlock(), materialData);
+        if (startTimeMillis == null) {
+            startTimeMillis = System.currentTimeMillis();
+        }
+
+        if (location.getBlockY() > location.getWorld().getMaxHeight()) {
+            return this;
+        }
+
+        int x = location.getBlockX();
+        int y = location.getBlockY();
+        int z = location.getBlockZ();
+
+        WrapperNmsChunk nmsChunk = wrapperNmsWorld.getNmsChunkAt(x, z);
+        nmsChunk.setFastBlock(wrapperNmsWorld.getChunksFlag(), x, y, z, materialData);
+
+        return this;
     }
 
     public FastBlockPlaceSession setBlockData(@NonNull World world, @NonNull Vector vector, @NonNull MaterialData materialData) {
@@ -53,7 +68,7 @@ public class FastBlockPlaceSession {
     }
 
     public FastBlockPlaceSession setBlockType(@NonNull Location location, @NonNull Material type) {
-        return setBlockType(location.getBlock(), type);
+        return setBlockData(location, new MaterialData(type));
     }
 
     public FastBlockPlaceSession setBlockType(@NonNull World world, @NonNull Vector vector, @NonNull Material type) {
@@ -65,7 +80,7 @@ public class FastBlockPlaceSession {
     }
 
     public FastBlockPlaceSession setBlockTypeAndData(@NonNull Location location, @NonNull Material type, int data) {
-        return setBlockTypeAndData(location.getBlock(), type, data);
+        return setBlockData(location, new MaterialData(type, (byte) data));
     }
 
     public FastBlockPlaceSession setBlockTypeAndData(@NonNull World world, @NonNull Vector vector, @NonNull Material type, int data) {
@@ -77,15 +92,18 @@ public class FastBlockPlaceSession {
     }
 
     public FastBlockPlaceSession setBlockTypeIdAndData(@NonNull Location location, int id, int data) {
-        return setBlockTypeIdAndData(location.getBlock(), id, data);
+        return setBlockData(location, new MaterialData(id, (byte) data));
     }
 
     public FastBlockPlaceSession setBlockTypeIdAndData(@NonNull World world, @NonNull Vector vector, int id, int data) {
         return setBlockTypeIdAndData(vector.toLocation(world), id, data);
     }
-    
-    public final long flush() {
-        wrapperNmsWorld.clearChunksMap();
-        return System.currentTimeMillis() - startTimeMillis;
+
+    public long flush() {
+        wrapperNmsWorld.flush();
+
+        System.gc();
+        return startTimeMillis > 0 ? System.currentTimeMillis() - startTimeMillis : -1L;
     }
+
 }
