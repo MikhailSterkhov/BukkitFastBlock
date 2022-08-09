@@ -15,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 
 public class FastBlockPlaceSession {
     
-    private final WrapperNmsWorld wrapperNmsWorld;
+    protected final WrapperNmsWorld wrapperNmsWorld;
 
     private Long startTimeMillis;
     
@@ -84,8 +84,8 @@ public class FastBlockPlaceSession {
         return setBlockTypeIdAndData(vector.toLocation(world), id, data);
     }
     
-    public CompletableFuture<Long> flush() {
+    public final long flush() {
         wrapperNmsWorld.clearChunksMap();
-        return CompletableFuture.completedFuture(System.currentTimeMillis() - startTimeMillis);
+        return System.currentTimeMillis() - startTimeMillis;
     }
 }

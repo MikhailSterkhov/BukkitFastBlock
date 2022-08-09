@@ -30,8 +30,8 @@ public void fillRegionByType(CuboidRegion cuboidRegion, Material material) {
         placeSession.setBlockType(block, material);
     }
 
-    placeSession.flush().thenAccept(delayMillis -> 
-        System.out.println("FastBlockPlaceSession was executed full per " + delayMillis + "ms"));
+    long totalSessionDelayMillis = placeSession.flush();
+    System.out.println("FastBlockPlaceSession was executed full per " + totalSessionDelayMillis + "ms");
 }
 
 ```
@@ -43,8 +43,8 @@ public void setFastLineX(Location begin, Material material, int length) {
         placeSession.setBlockType(begin.clone().add(x, 0, 0), material);
     }
 
-    placeSession.flush().thenAccept(delayMillis ->
-        System.out.println("FastBlockPlaceSession was executed full per " + delayMillis + "ms"));
+    long totalSessionDelayMillis = placeSession.flush();
+    System.out.println("FastBlockPlaceSession was executed full per " + totalSessionDelayMillis + "ms");
 }
 ```
 
