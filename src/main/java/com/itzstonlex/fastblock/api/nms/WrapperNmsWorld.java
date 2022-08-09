@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Getter
 public class WrapperNmsWorld implements NmsWrapper {
 
-    private final Set<Map.Entry<Integer, Integer>> cachedChunksCoordinates = new HashSet<>();
+    //private final Set<Map.Entry<Integer, Integer>> cachedChunksCoordinates = new HashSet<>();
     private final Map<Integer, WrapperNmsChunk> chunksMap = new ConcurrentHashMap<>();
 
     private final Object handle;
@@ -36,7 +36,7 @@ public class WrapperNmsWorld implements NmsWrapper {
 
         return chunksMap.computeIfAbsent(chX + chZ, (sum) -> {
 
-            cachedChunksCoordinates.add(Maps.immutableEntry(x, z));
+            //cachedChunksCoordinates.add(Maps.immutableEntry(x, z));
             return new WrapperNmsChunk(NmsHelper.getNmsChunkAt(handle, chX, chZ));
         });
     }
@@ -66,8 +66,8 @@ public class WrapperNmsWorld implements NmsWrapper {
         chunksMap.forEach((integer, wrapperNmsChunk) -> wrapperNmsChunk.flush());
         chunksMap.clear();
 
-        cachedChunksCoordinates.forEach(chunkEntry -> refreshChunkAt(chunkEntry.getKey(), chunkEntry.getValue()));
-        cachedChunksCoordinates.clear();
+        //cachedChunksCoordinates.forEach(chunkEntry -> refreshChunkAt(chunkEntry.getKey(), chunkEntry.getValue()));
+        //cachedChunksCoordinates.clear();
     }
 
 }

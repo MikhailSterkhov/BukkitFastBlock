@@ -16,8 +16,6 @@ public class WrapperNmsChunk implements NmsWrapper {
 
     private Object[] chunkSectionsArray;
 
-    private Map<Object, Object> palettesByChunkMap;
-
     WrapperNmsChunk(@NonNull Object handle) {
         this.handle = handle;
     }
@@ -64,7 +62,6 @@ public class WrapperNmsChunk implements NmsWrapper {
 
     public void flush() {
         chunkSectionsArray = null;
-        palettesByChunkMap = null;
     }
 
 }
