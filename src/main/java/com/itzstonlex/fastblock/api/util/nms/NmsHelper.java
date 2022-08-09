@@ -9,7 +9,6 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.material.MaterialData;
 
 import java.lang.reflect.Constructor;
@@ -95,18 +94,6 @@ public class NmsHelper {
     @SneakyThrows
     public void invokeSetFastBlock(Object paletteSrc, int x, int y, int z, Object blockData) {
         SET_BLOCK_FAST_METHOD.invoke(paletteSrc, x, y, z, blockData);
-    }
-
-    public void setFastBlocks(@NonNull World world, @NonNull Map<Block, MaterialData> blocksToSetMap) {
-        WrapperNmsWorld nmsWorld = wrap(world);
-
-        blocksToSetMap.forEach((block, materialData) -> {
-
-            WrapperNmsChunk nmsChunk = nmsWorld.getNmsChunkAt(block.getX(), block.getZ());
-            nmsChunk.setFastBlock(nmsWorld.getChunksFlag(), block.getLocation().toVector(), materialData);
-        });
-
-        nmsWorld.clearChunksMap();
     }
 
 }

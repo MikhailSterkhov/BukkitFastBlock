@@ -47,3 +47,11 @@ public void setFastLineX(Location begin, Material material, int length) {
         System.out.println("FastBlockPlaceSession was executed full per " + delayMillis + "ms"));
 }
 ```
+
+---
+
+## SPEED TESTS RESULTS
+
+* `60K blocks placed per 450 ms (0.45 sec)`
+
+* `8M blocks placed per 3200 ms (3.2 sec)`
